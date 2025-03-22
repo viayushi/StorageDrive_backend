@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Tailwind -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Flowbite -->
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <title>File Upload</title>
+</head>
+<body class="bg-gray-100 dark:bg-gray-800">
+
+    <main class="p-4 h-screen w-screen flex flex-col items-center justify-center">
+        
+        <!-- Upload Button -->
+        <button data-tw-merge class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded transition duration-300">
+            Upload file
+        </button>
+
+        <!-- Pop-up Modal -->
+        <div class="pop fixed top-0 left-0 h-screen w-screen flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+            <form action="/upload-file" method="post" enctype="multipart/form-data" class="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg">
+                
+                <!-- Dropzone -->
+                <div class="flex items-center justify-center w-full">
+                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-96 h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                            </svg>
+                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                        </div>
+                        <input id="dropzone-file" type="file" class="hidden" name="file"/>
+                    </label>
+                </div> 
+
+                <!-- Submit Button -->
+                <button type="submit" class="mt-4 w-full bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded transition duration-300">
+                    Submit
+                </button>
+            </form>
+        </div>
+
+        <div class="files flex flex-col gap-2">
+            <% files.forEach((file) => { %>
+                <div class="p-2 cursor-pointer rounded-md bg-gray-300">
+                    <h1><%= file.originalName %></h1>
+                    <a href="/download/<%= file.path %>" download="<%= file.originalName %>">
+                        <i class="re-download-line"></i> Download
+                    </a>
+                </div>
+            <% }) %>
+        </div>
+    </main>
+
+    <!-- Flowbite Script -->
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
+    <!-- JavaScript to Show/Hide Modal -->
+    <script>
+        const uploadButton = document.querySelector("button");
+        const popup = document.querySelector(".pop");
+
+        uploadButton.addEventListener("click", () => {
+            popup.classList.toggle("hidden");
+        });
+
+        popup.addEventListener("click", (event) => {
+            if (event.target === popup) {
+                popup.classList.add("hidden");
+            }
+        });
+    </script>
+
+</body>
+</html>
